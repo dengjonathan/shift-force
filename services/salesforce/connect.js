@@ -1,5 +1,6 @@
 const jsforce = require('jsforce');
 const Promise = require('bluebird');
+require('dotenv').config();
 
 const config = require('../../config/salesforceConfig');
 
@@ -11,9 +12,9 @@ const getConnection = function () {
     oauth2: {
       // you can change loginUrl to connect to sandbox or prerelease env.
       // loginUrl : 'https://test.salesforce.com',
-      clientId: config.clientId,
-      clientSecret: config.clientSecret,
-      redirectUri: config.callbackUrl
+      clientId: process.env.clientId,
+      clientSecret: process.env.clientSecret,
+      redirectUri: process.env.callbackUrl
     }
   });
   // Convert all of conn's methods to Promise API
@@ -22,7 +23,7 @@ const getConnection = function () {
 }
 
 const login = function() {
-  return this.conn.login(config.username, config.password + config.securityToken)
+  return this.conn.login(process.env.username, process.env.password + process.env.securityToken)
     .then(userInfo => {
       accessToken = this.conn.accessToken;
       instanceUrl = this.conn.instanceUrl;
