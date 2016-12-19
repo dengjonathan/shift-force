@@ -2,8 +2,6 @@ const jsforce = require('jsforce');
 const Promise = require('bluebird');
 require('dotenv').config();
 
-const config = require('../../config/salesforceConfig');
-
 let accessToken = null;
 let instanceUrl = null;
 
@@ -32,8 +30,15 @@ const login = function() {
     .catch(err => console.error('Error while logging in', err));
 }
 
+const logout = function() {
+  this.conn.logout
+    .then(console.log)
+    .catch(err => console.error('Error logging out', err));
+}
+
 module.exports = {
   conn: getConnection(),
   loggedIn: false,
-  login
+  login,
+  logout
 };
