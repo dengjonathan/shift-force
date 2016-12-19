@@ -1,17 +1,17 @@
 require('dotenv').config();
 const express = require('express');
+const session = require('express-session');
 const jsforce = require('jsforce');
+const passport = require('passport');
 const app = express();
-console.log(process.env.SF_CLIENT_ID);
-//const oauth2 = require('./services/salesforce/oauth');
-console.log(process.env.AUTH_CALLBACK_URL);
+const oauth2 = require('./services/salesforce/oauth');
+const query = require('./services/salesforce/query');
 
-const oauth2 = new jsforce.OAuth2({
-  loginUrl : 'https://login.salesforce.com',  
-    clientId: process.env.SF_CLIENT_ID,
-    clientSecret: process.env.SF_CLIENT_SECRET,
-    redirectUri: process.env.AUTH_CALLBACK_URL
-});
+app.use(session({
+  secret: 'supaSecret',
+  resave: false,
+  saveUnitialized: true
+}));
 
 /* SF OAuth request, redirect to SF login */
 app.get('/oauth/auth', function(req, res) {
@@ -30,11 +30,18 @@ app.get('/oauth/callback', function(req, res) {
         console.log('User ID: ' + userInfo.id);
         console.log('Org ID: ' + userInfo.organizationId);
 
-        // req.session.accessToken = conn.accessToken;
-        // req.session.instanceUrl = conn.instanceUrl;
+        req.session.accessToken = conn.accessToken;
+        req.session.instanceUrl = conn.instanceUrl;
         res.redirect('/accounts');
     });
 });
+
+app.get('/accounts', (req, res) => {
+  console.log(req.session.accessToken, req.session.instanceUrl);
+  res.end('hello world');
+  // query.getAccounts = ''
+});
+
 
 app.listen(process.env.PORT||8080);
 console.log('server listening on port 8080');
