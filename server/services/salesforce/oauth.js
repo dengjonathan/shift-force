@@ -19,14 +19,14 @@ const oauthCallback = queryCode => {
       if (err) {
         return resolve(err);
       }
-    console.log('Access Token: ' + conn.accessToken);
-    console.log('Instance URL: ' + conn.instanceUrl);
-    console.log('User ID: ' + userInfo.id);
-    console.log('Org ID: ' + userInfo.organizationId);
-    resolve({
-      accessToken: conn.accessToken, 
-      instanceUrl: conn.instanceUrl
-    });
+      console.log('Access Token: ' + conn.accessToken);
+      console.log('Instance URL: ' + conn.instanceUrl);
+      console.log('User ID: ' + userInfo.id);
+      console.log('Org ID: ' + userInfo.organizationId);
+      resolve({
+        accessToken: conn.accessToken,
+        instanceUrl: conn.instanceUrl
+      });
     });
   });
 };

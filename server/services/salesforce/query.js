@@ -20,4 +20,4 @@ exports.getAccounts = (accessToken, instanceUrl) => query(
   instanceUrl
 );
 
-exports.getSeekers = () => query('SELECT id, name FROM seekers LIMIT 50');
+/*ADD WHATEVER QUERIES YOU WANT HERE */ 

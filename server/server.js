@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const jsforce = require('jsforce');
-const passport = require('passport');
 const app = express();
 const SFConnect = require('./services/salesforce/oauth');
 const SFQuery = require('./services/salesforce/query');
