@@ -1,3 +1,4 @@
+/*USE THIS MODULE FOR OAUTH FLOW ONLY FOR ADMIN LOGINS */
 const jsforce = require('jsforce');
 
 // Salesforce OAuth2 client information

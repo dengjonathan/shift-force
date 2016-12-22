@@ -3,7 +3,7 @@ const express = require('express');
 const session = require('express-session');
 const jsforce = require('jsforce');
 const app = express();
-const SFConnect = require('./services/salesforce/oauth');
+const SFConnect = require('./services/salesforce/connect');
 const SFQuery = require('./services/salesforce/query');
 
 app.use(session({
@@ -12,23 +12,13 @@ app.use(session({
   saveUninitialized: true
 }));
 
-/* SF OAuth request, redirect to SF login */
-app.get('/oauth/auth', function (req, res) {
-  res.redirect(SFConnect.oauth2.getAuthorizationUrl({
-    scope: 'api id web'
-  }));
-});
-
-/* OAuth callback from SF, pass received auth code and get access token */
-app.get('/oauth/callback', function (req, res) {
-  SFConnect.oauthCallback(req.query.code)
-    .then(({accessToken, instanceUrl}) => {
-      console.log(accessToken, instanceUrl)
-      req.session.accessToken = accessToken;
-      req.session.instanceUrl = instanceUrl;
-      res.redirect('/accounts');
-    });
-});
+// Connect to salesforce
+SFConnect.login()
+  .then(conn => {
+    console.log(conn.accessToken);
+    return conn.query('SELECT id, name FROM account LIMIT 50')
+  })
+  .then(console.log);
 
 app.get('/accounts', (req, res) => {
   console.log(req.session.accessToken, req.session.instanceUrl);
