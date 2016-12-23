@@ -15,9 +15,15 @@ export default class NewProfileForm extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleAddCity = this.handleAddCity.bind(this);
   }
   handleChange(event) {
     this.setState({[event.target.id]: event.target.value});
+  }
+  handleAddCity(event) {
+    if(event.which === 13) {
+      this.setState({locations: [...this.state.locations, event.target.value]});
+    }
   }
   handleSubmit(event) {
     event.preventDefault();
@@ -50,7 +56,8 @@ export default class NewProfileForm extends Component {
       </label>
       <label>
         City
-        <input type='search' name='search' />
+        <input type='search' name='search' onKeyPress={this.handleAddCity}/>
+        {this.state.locations}
       </label>
       <input type='submit' name='Submit'/>
     </form>
